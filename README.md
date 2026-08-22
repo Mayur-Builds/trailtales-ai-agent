@@ -128,8 +128,29 @@ Future versions of TrailTales could include:
 
 ## 📸 Project Evidence
 
-Screenshots and additional implementation details will be added as the project progresses.
+### AWS Lambda
 
+The Lambda function contains the core TrailTales agent logic and integrates with Amazon Bedrock.
+
+![AWS Lambda](screenshots/lambda-function.png)
+
+### EventBridge Scheduler
+
+EventBridge Scheduler automatically triggers the TrailTales Lambda function on a daily schedule.
+
+![EventBridge Scheduler](screenshots/eventbridge-scheduler.png)
+
+### Amazon S3
+
+Generated adventure content is stored in Amazon S3 as daily-story.json.
+
+![Amazon S3](screenshots/s3-storage.png.png)
+
+### Amazon Bedrock — Nova Micro
+
+TrailTales uses Amazon Nova Micro through an APAC inference profile.
+
+![Amazon Bedrock Nova Micro](screenshots/bedrock-nova-micro.png)
 ## 🔗 Repository
 
 GitHub: https://github.com/Mayur-Builds/trailtales-ai-agent
