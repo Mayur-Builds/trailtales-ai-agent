@@ -151,6 +151,17 @@ Generated adventure content is stored in Amazon S3 as daily-story.json.
 TrailTales uses Amazon Nova Micro through an APAC inference profile.
 
 ![Amazon Bedrock Nova Micro](screenshots/bedrock-nova-micro.png)
+
+
+## 📊 Project Status
+
+- ✅ AWS Lambda configured
+- ✅ Amazon S3 storage configured
+- ✅ Amazon EventBridge Scheduler configured
+- ✅ Amazon Bedrock Nova Micro inference profile configured
+- ✅ IAM permissions configured
+- ⏳ Bedrock quota increase request under AWS Support review
+- ⏳ Final Nova Micro invocation pending quota availability
 ## 🔗 Repository
 
 GitHub: https://github.com/Mayur-Builds/trailtales-ai-agent
