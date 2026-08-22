@@ -1,15 +1,24 @@
 import json
 import boto3
-from datetime import datetime
+from datetime import datetime, timezone
 
-s3 = boto3.client("s3")
+# AWS clients
+s3 = boto3.client(
+    "s3",
+    region_name="ap-south-1"
+)
 
 bedrock = boto3.client(
     "bedrock-runtime",
     region_name="ap-south-1"
 )
 
+# S3 bucket
 BUCKET_NAME = "daily-adventure-agent-mayur-2026"
+
+# Bedrock inference profile
+MODEL_ID = "apac.amazon.nova-micro-v1:0"
+
 
 def lambda_handler(event, context):
 
@@ -25,35 +34,53 @@ Requirements:
 - Return only the title and story
 """
 
-    response = bedrock.converse(
-      modelId="apac.amazon.nova-micro-v1:0",
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "text": prompt
-                    }
-                ]
-            }
-        ]
-    )
+    try:
+        # Invoke Amazon Nova Micro
+        response = bedrock.converse(
+            modelId=MODEL_ID,
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "text": prompt
+                        }
+                    ]
+                }
+            ]
+        )
 
-    story_text = response["output"]["message"]["content"][0]["text"]
+        # Extract generated story
+        story_text = response["output"]["message"]["content"][0]["text"]
 
-    story = {
-        "generated_at": datetime.utcnow().isoformat(),
-        "content": story_text
-    }
+        # Prepare JSON document
+        story = {
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "content": story_text
+        }
 
-    s3.put_object(
-        Bucket=BUCKET_NAME,
-        Key="daily-story.json",
-        Body=json.dumps(story),
-        ContentType="application/json"
-    )
+        # Save story to S3
+        s3.put_object(
+            Bucket=BUCKET_NAME,
+            Key="daily-story.json",
+            Body=json.dumps(story, ensure_ascii=False),
+            ContentType="application/json"
+        )
 
-    return {
-        "statusCode": 200,
-        "body": json.dumps(story)
-    }
+        print("Adventure story successfully generated and saved to S3.")
+
+        return {
+            "statusCode": 200,
+            "body": json.dumps(story, ensure_ascii=False)
+        }
+
+    except Exception as e:
+
+        print(f"Error: {str(e)}")
+
+        return {
+            "statusCode": 500,
+            "body": json.dumps({
+                "error": str(e)
+            })
+        }
