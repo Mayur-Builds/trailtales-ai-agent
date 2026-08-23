@@ -116,63 +116,47 @@
 
     </div>
 
-    <script>
+   <script>
+    async function loadStory() {
+        try {
+            const response = await fetch("daily-story.json");
 
-        async function loadStory() {
-
-            try {
-
-                const response = await fetch("daily-story.json");
-
-                if (!response.ok) {
-                    throw new Error("Story could not be loaded.");
-                }
-
-                const data = await response.json();
-
-                const content = data.content || "";
-
-                // Try to separate the title from the story.
-                const lines = content.trim().split("\n");
-
-                let title = "Today's Adventure";
-                let story = content;
-
-                if (lines.length > 1) {
-                    title = lines[0].replace(/^#+\s*/, "").trim();
-                    story = lines.slice(1).join("\n").trim();
-                }
-
-                document.getElementById("title").textContent = title;
-
-                document.getElementById("story").textContent = story;
-
-                if (data.generated_at) {
-                    const date = new Date(data.generated_at);
-
-                    document.getElementById("generated").textContent =
-                        "Generated: " + date.toLocaleString();
-                }
-
-                document.getElementById("story").classList.remove("loading");
-
-            } catch (error) {
-
-                document.getElementById("title").textContent =
-                    "Unable to load today's adventure";
-
-                document.getElementById("story").textContent =
-                    "Please try again later.";
-
-                document.getElementById("story").className = "error";
-
-                console.error(error);
+            if (!response.ok) {
+                throw new Error("Story could not be loaded.");
             }
+
+            const data = await response.json();
+
+            document.getElementById("title").textContent =
+                "Today's Adventure";
+
+            document.getElementById("story").textContent =
+                data.content || "No story available.";
+
+            if (data.generated_at) {
+                const date = new Date(data.generated_at);
+
+                document.getElementById("generated").textContent =
+                    "Generated: " + date.toLocaleString();
+            }
+
+            document.getElementById("story").classList.remove("loading");
+
+        } catch (error) {
+            document.getElementById("title").textContent =
+                "Today's Adventure";
+
+            document.getElementById("story").textContent =
+                "Unable to load today's adventure.";
+
+            document.getElementById("story").className = "error";
+
+            console.error(error);
         }
+    }
 
-        loadStory();
-
-    </script>
+    loadStory();
+</script>
 
 </body>
 </html>
