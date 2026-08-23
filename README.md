@@ -160,8 +160,7 @@ TrailTales uses Amazon Nova Micro through an APAC inference profile.
 - ✅ Amazon EventBridge Scheduler configured
 - ✅ Amazon Bedrock Nova Micro inference profile configured
 - ✅ IAM permissions configured
-- ⏳ Bedrock quota increase request under AWS Support review
-- ⏳ Final Nova Micro invocation pending quota availability
+- ✅ Nova Micro successfully generated an adventure story and stored it in Amazon S3
 ## 🔗 Repository
 
 GitHub: https://github.com/Mayur-Builds/trailtales-ai-agent
