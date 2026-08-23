@@ -116,7 +116,7 @@
 
     </div>
 
-   <script>
+<script>
     async function loadStory() {
         try {
             const response = await fetch("daily-story.json");
@@ -128,10 +128,10 @@
             const data = await response.json();
 
             document.getElementById("title").textContent =
-                "Today's Adventure";
+                data.title || "Today's Adventure";
 
             document.getElementById("story").textContent =
-                data.content || "No story available.";
+                data.story || "No story available.";
 
             if (data.generated_at) {
                 const date = new Date(data.generated_at);
